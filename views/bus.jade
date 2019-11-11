@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    meta(caharset="utf-8")
+  body
+   form(action="bus_check" method="get")
+    p
+      |버스 ID
+      input(type="text" name="id")
+    //p
+    //  |경로 ID
+    //  input(type="text" name="route")
+    input(type="submit" value="OK")
+    p
+    p
+
+   form(action="bus_check35" method="get")
+    input(type="submit" value="35하남 버스")
+    p
+    p
+
+   form(action="check_route" method="get")
+    input(type="submit" value="35하남 버스 경로")
+    p
+
+ 
+    div= time
