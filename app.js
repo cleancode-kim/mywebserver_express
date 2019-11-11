@@ -114,7 +114,7 @@ function makeMsgBusRunning(body, word)
   return msg;
 }
 
-
+var routelist;
 app.get('/check_route', function(req, res) {
 
   var url = 'http://ws.bus.go.kr/api/rest/busRouteInfo/getStaionByRoute';
@@ -128,16 +128,19 @@ app.get('/check_route', function(req, res) {
     method: 'GET'
     }, function (error, response, body) {
     
+    routelist = {};
     var msg = '<h4>';
     $ = cheerio.load(body);
-    console.log( $('itemList') );
+
     $('itemList').each(function(idx) {
        var no1 = $(this).find('stationNm').text();
-       msg += (idx+1) + '. ' + no1 + '<br>';
+       var item = (idx+1) + '. ' + no1 + '<br>';
+       msg += item;
+       routelist += item;
     });
     msg += '</h4>';
 
-    res.send( '노선<p>' + msg);
+    res.send( '놀선<p>' + msg);
   });
 });
 
