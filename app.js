@@ -130,6 +130,7 @@ app.get('/check_route', function(req, res) {
     
     var msg = '<h4>';
     $ = cheerio.load(body);
+    console.log( $('itemList') );
     $('itemList').each(function(idx) {
        var no1 = $(this).find('stationNm').text();
        msg += (idx+1) + '. ' + no1 + '<br>';
