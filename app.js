@@ -1,10 +1,8 @@
 var express = require('express');
 var app = express();
 var key = 'NJDdbKOFJopjpR571rBLghfjGiIl2c4S7TQKARAmKo6w4Cg85bwSiGkzy9oLSWYamu2cZCP%2BylsmdHGhExiOXQ%3D%3D';
-
-//const bodyParser = require('body-parser')
-//app.use(bodyParser.urlencoded({extended:false}))
 app.locals.pretty = true;
+var routelist = [];
 
 var request = require('request');
 var cheerio = require('cheerio');
@@ -42,31 +40,6 @@ app.get('/bus_check', function(req, res) {
   });
 });
 
-app.get('/bus_check_1', function(req, res) {
-  var url = 'http://openapi.gbis.go.kr/ws/rest/busarrivalservice/station';
-  var queryParams = '?' + encodeURIComponent('serviceKey') + '=' + key;
-
-  queryParams += '&' + encodeURIComponent('stationId') + '=' + encodeURIComponent( '233001450' );
-
-  request({
-    url: url + queryParams,
-    method: 'GET'
-    }, function (error, response, body) {
-    
-    $ = cheerio.load(body);
-    $('busArrivalList').each(function(idx) {
-       var no1 = $(this).find('plateNo1').text();
-       var no2 = $(this).find('plateNo2').text();
-       console.log(`도착 예정 버스: ${no1}, 다음 도착버스: ${no2 ? no2 : '---'}`);
-    });
-    console.log(' -------------------------- ');
-    res.send('35번 도착 예정 버스' );
-
-
-    //console.log('Reponse received', body);
-  });
-});
-
 app.get('/bus_check35', function(req, res) {
   var url = 'http://ws.bus.go.kr/api/rest/buspos/getBusPosByRtid';
   var busRouteId = '227000043';
@@ -79,6 +52,8 @@ app.get('/bus_check35', function(req, res) {
     method: 'GET'
     }, function (error, response, body) {
       msg += makeMsgBusRunning(body, 'sectOrd');
+
+      msg += routelist;
       res.send(msg);
   });
 
@@ -114,7 +89,6 @@ function makeMsgBusRunning(body, word)
   return msg;
 }
 
-var routelist;
 app.get('/check_route', function(req, res) {
 
   var url = 'http://ws.bus.go.kr/api/rest/busRouteInfo/getStaionByRoute';
@@ -128,7 +102,7 @@ app.get('/check_route', function(req, res) {
     method: 'GET'
     }, function (error, response, body) {
     
-    routelist = {};
+    routelist = [];
     var msg = '<h4>';
     $ = cheerio.load(body);
 
@@ -140,7 +114,7 @@ app.get('/check_route', function(req, res) {
     });
     msg += '</h4>';
 
-    res.send( '놀선<p>' + msg);
+    res.send( '노선<p>' + msg);
   });
 });
 
