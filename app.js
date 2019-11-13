@@ -84,7 +84,7 @@ function makeMsgBusRunning(body, word)
   stationsList.forEach(function(data, idx) {
     msg += (idx+1) + '. ' + data + '/<br>';
   });
-  */
+  */ 
 
   return msg;
 }
